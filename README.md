@@ -14,7 +14,7 @@ O projeto **Gestão de Gastos** é uma aplicação desenvolvida para o Google Sh
 ## Funcionalidades
 * **Registro de transações:**
   * Inserção de descrição, data, valor, tipo (receita, despesa ou custo fixo), categoria, banco, modo de pagamento e status (pago ou não).
-  * Suporte para transações parceladas.
+  * Suporte para transações parceladas e custo fixo: Se for em Modo Crédito, o valor inteiro será parcelado. Se for um Custo Fixo, o número de parcelas indicará o número de repetições.
 
 * **Atualização de status:**
   * Permite marcar o pagamento de uma transação diretamente na interface.
