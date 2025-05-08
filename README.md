@@ -8,6 +8,7 @@ O projeto descrito seria de uma planilha de Gestão de Gastos, onde os registros
 ## Descrição do Projeto Adaptado
 
 O projeto **Gestão de Gastos** é uma aplicação desenvolvida para o Google Sheets que auxilia no controle financeiro pessoal, permitindo registrar, atualizar e acompanhar transações financeiras. A interface HTML integrada possibilita um registro ágil e intuitivo das despesas, receitas e custos fixos.
+
 ---
 
 ## Funcionalidades
