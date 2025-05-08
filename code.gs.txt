@@ -1,0 +1,72 @@
+// Função que cria o menu na interface do Google Sheets
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('💰 Controle de Gastos')
+    .addItem('Registrar Transação', 'abrirFormulario')
+    .addToUi();
+}
+
+// Função que abre o formulário no painel modal
+function abrirFormulario() {
+  const html = HtmlService.createHtmlOutputFromFile("formulario")
+    .setWidth(400)
+    .setHeight(600);
+  SpreadsheetApp.getUi().showModalDialog(html, 'Registrar Transação');
+}
+
+// Função para pegar as categorias cadastradas na aba "categorias"
+function getCategorias() {
+  const aba = SpreadsheetApp.getActive().getSheetByName("categorias");
+  const dados = aba.getRange(2, 1, aba.getLastRow() - 1).getValues().flat();
+  return [...new Set(dados.filter(String))];
+}
+
+// Função para salvar nova categoria na aba "categorias"
+function salvarCategoria(novaCategoria) {
+  const aba = SpreadsheetApp.getActive().getSheetByName("categorias");
+  const categoriasExistentes = aba.getRange(2, 1, aba.getLastRow() - 1).getValues().flat();
+  if (!categoriasExistentes.includes(novaCategoria)) {
+    aba.appendRow([novaCategoria]);
+  }
+}
+
+// Função para registrar uma transação na aba "controle"
+function registrarTransacao(dados) {
+  const aba = SpreadsheetApp.getActive().getSheetByName("controle");
+  const ultimaLinha = aba.getLastRow();
+  const registro = ultimaLinha + 1;
+  const data = new Date(dados.data);
+  const parcelas = parseInt(dados.parcelas, 10) || 1;
+  const valor = parseFloat(dados.valor);
+  const parcelasSaoFixas = dados.tipo === "custo fixo";
+  const valorPorParcela = parcelasSaoFixas ? valor : valor / parcelas;
+
+  for (let i = 0; i < parcelas; i++) {
+    const novaData = new Date(data);
+    novaData.setMonth(data.getMonth() + i);
+    aba.appendRow([
+      registro + i,
+      Utilities.formatDate(novaData, Session.getScriptTimeZone(), "dd/MM/yyyy"),
+      dados.descricao + (parcelas > 1 ? ` (${i + 1}/${parcelas})` : ""),
+      valorPorParcela,
+      dados.tipo,
+      dados.categoria,
+      dados.banco,
+      dados.modo,
+      false // Checkbox inicialmente não marcado
+    ]);
+  }
+}
+
+// Função para atualizar o status de uma transação
+function atualizarStatus(registroId, pago) {
+  const aba = SpreadsheetApp.getActive().getSheetByName("controle");
+  const registros = aba.getRange(2, 1, aba.getLastRow() - 1, 1).getValues();
+  for (let i = 0; i < registros.length; i++) {
+    if (registros[i][0] == registroId) {
+      aba.getRange(i + 2, 9).setValue(pago); // Coluna 9 = Pago (checkbox)
+      return true;
+    }
+  }
+  return false;
+}
