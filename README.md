@@ -54,14 +54,3 @@ O projeto **Gestão de Gastos** é uma aplicação desenvolvida para o Google Sh
 | Banco     | Origem ou destino financeiro   |
 | Modo      | Forma de pagamento             |
 | Pago      | Status de pagamento (Checkbox) |
-
----
-
-## Como Usar
-
-1. Abra o Google Sheets.
-2. Acesse o menu **💰 Controle de Gastos** e clique em **Registrar Transação**.
-3. Preencha os campos obrigatórios e clique em **Registrar**.
-4. Para atualizar o status de pagamento, insira o ID do registro e o novo status.
-
----
